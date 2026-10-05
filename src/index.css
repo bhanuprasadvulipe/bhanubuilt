@@ -1,37 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  /* Default: White and Orange */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f9fafb;
-  --bg-tertiary: #f3f4f6;
-
-  --text-primary: #111827;
-  --text-secondary: #4b5563;
-  --text-muted: #9ca3af;
-
-  --accent-primary: #f97316;
-  /* Orange */
-  --accent-primary-hover: #ea580c;
-  --accent-secondary: #3b82f6;
-  --accent-secondary-hover: #2563eb;
-  --accent-warning: #f59e0b;
-
-  --border-color: #e5e7eb;
-  --border-color-hover: var(--accent-primary);
-
-  --font-primary: 'Inter', sans-serif;
-  --font-secondary: 'Outfit', sans-serif;
-
-  --bg-primary-rgb: 255, 255, 255;
-  --accent-primary-rgb: 249, 115, 22;
-  --btn-text: #ffffff;
-  --card-bg-hover: #ffffff;
-  --shadow-color: 0, 0, 0;
-}
-
-[data-theme='dark'] {
-  /* Toggled: Black and Gold */
+  /* Default: Black and Gold (Dark Theme Only) */
   --bg-primary: #121212;
   --bg-secondary: #1b1b1b;
   --bg-tertiary: #2a2a2a;
@@ -49,6 +19,9 @@
 
   --border-color: #2a2a2a;
   --border-color-hover: var(--accent-primary);
+
+  --font-primary: 'Inter', sans-serif;
+  --font-secondary: 'Outfit', sans-serif;
 
   --bg-primary-rgb: 18, 18, 18;
   --accent-primary-rgb: 212, 175, 55;
