@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Calculator, Utensils, Dumbbell, ArrowRight } from 'lucide-react';
+import { Calculator, Utensils, Dumbbell } from 'lucide-react';
 import { motion } from 'framer-motion';
 import './FitnessTools.css';
 
@@ -59,11 +59,6 @@ const FitnessTools = () => {
               </Link>
             </motion.div>
           ))}
-        </div>
-        
-        <div className="swipe-indicator">
-          <span>Swipe to see more</span>
-          <ArrowRight size={16} />
         </div>
       </div>
     </section>
