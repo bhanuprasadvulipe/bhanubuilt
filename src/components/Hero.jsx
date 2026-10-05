@@ -1,52 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabaseClient';
+import React from 'react';
 import { ArrowRight, Play } from 'lucide-react';
 import { motion } from 'framer-motion';
+import heroImg from '../assets/hero.png';
 import './Hero.css';
 
 const Hero = () => {
-  const [heroImage, setHeroImage] = useState('https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=1000&auto=format&fit=crop');
-
-  useEffect(() => {
-    const fetchHeroImage = async () => {
-      try {
-        const { data } = await supabase.from('settings').select('value').eq('key', 'hero_image').single();
-        if (data && data.value) {
-          setHeroImage(data.value);
-        }
-      } catch (e) {
-        // Silently fail to fallback image
-      }
-    };
-    fetchHeroImage();
-  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
+        staggerChildren: 0.05
       }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
+    hidden: { opacity: 0, y: 15 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } }
   };
 
   return (
     <section className="hero">
       <motion.div 
         className="hero-image"
-        initial={{ opacity: 0, x: 50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
       >
         <div className="image-placeholder">
           <div className="glow"></div>
-          <img src={heroImage} alt="Gym Trainer Bhanu" />
+          <img src={heroImg} alt="Gym Trainer Bhanu" fetchpriority="high" />
         </div>
       </motion.div>
       <div className="container hero-container">
