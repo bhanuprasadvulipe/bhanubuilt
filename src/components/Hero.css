@@ -1,0 +1,173 @@
+.hero {
+  padding-top: 8rem;
+  padding-bottom: 4rem;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: -10%;
+  width: 50%;
+  height: 50%;
+  background: radial-gradient(circle, rgba(var(--accent-primary-rgb), 0.15) 0%, rgba(var(--bg-primary-rgb), 0) 70%);
+  z-index: 0;
+}
+
+.hero-container {
+  display: block; /* Removed flex columns so it doesn't force image down */
+  position: relative;
+  z-index: 10;
+  width: 100%;
+}
+
+.hero-content {
+  max-width: 55%;
+  position: relative;
+  z-index: 10;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: rgba(var(--accent-primary-rgb), 0.1);
+  color: var(--accent-primary);
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(var(--accent-primary-rgb), 0.2);
+}
+
+.hero h1 {
+  margin-bottom: 1.5rem;
+}
+
+.hero h1 span {
+  color: var(--accent-primary);
+}
+
+.hero p {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #f8f9fa; /* off-white */
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+  max-width: 90%;
+  text-shadow: 
+    0 2px 15px rgba(0, 0, 0, 0.8),
+    0 4px 30px rgba(0, 0, 0, 0.9);
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.hero-image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 60%;
+  z-index: 1; /* Behind the text */
+  pointer-events: none;
+}
+
+.image-placeholder {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.image-placeholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* 
+    Using 65% on the Y-axis finds the sweet spot between 50% (center) and 100% (bottom).
+    It pulls the image down enough to show the head, but keeps as much of the lower body as possible.
+  */
+  object-position: left 65%; 
+  /* Simple, bulletproof fade on the left side */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 40%);
+  mask-image: linear-gradient(to right, transparent 0%, black 40%);
+}
+
+.glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  background: var(--accent-primary);
+  filter: blur(100px);
+  opacity: 0.15;
+  z-index: 1;
+}
+
+@media (max-width: 992px) {
+  .hero {
+    min-height: auto;
+    padding-top: 10rem;
+    padding-bottom: 5rem;
+    align-items: flex-start; /* Align text higher on mobile */
+  }
+  
+  .hero-container {
+    padding-top: 0;
+  }
+  
+  .hero-content {
+    max-width: 100%;
+  }
+  
+  .hero p {
+    margin: 0 0 2.5rem 0; /* Left align p */
+  }
+  
+  .hero-actions {
+    justify-content: flex-start; /* Left align buttons */
+  }
+
+  .hero-image {
+    width: 60%; /* Exactly 60% of screen width on the extreme right */
+    right: 0;
+    opacity: 1; /* Fully visible */
+  }
+
+  .image-placeholder img {
+    /* Set object-position to left bottom so it anchors to the bottom left */
+    object-position: left bottom; 
+    /* Scale the image up by 20% from the bottom left. 
+       This pushes the top 20% out of the frame (cropping it) and moves the face upwards! */
+    transform-origin: left bottom;
+    transform: scale(1.2);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 40%);
+    mask-image: linear-gradient(to right, transparent 0%, black 40%);
+  }
+  
+  .hero::before {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-actions {
+    flex-direction: column;
+  }
+  .hero-content {
+    text-align: left; /* Left align text on small screens for better readability over image */
+  }
+  .hero-image {
+    opacity: 0.5; /* more transparent on very small screens */
+  }
+}

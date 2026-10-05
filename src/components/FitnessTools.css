@@ -1,0 +1,79 @@
+.tools-section {
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.tool-card {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+}
+
+.tool-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent-primary);
+  box-shadow: 0 10px 30px rgba(var(--accent-primary-rgb), 0.1);
+}
+
+.tool-card:hover .icon-wrapper {
+  background-color: var(--accent-primary);
+  color: var(--btn-text);
+  transform: scale(1.1);
+}
+
+.tool-card h3 {
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.tool-card p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .tools-section .grid {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    gap: 1.25rem;
+    padding-bottom: 2rem;
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  
+  .tools-section .grid > div {
+    flex: 0 0 85%;
+    max-width: 320px;
+    scroll-snap-align: center;
+  }
+
+  .tools-section .grid::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .tools-section .grid {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .tool-card {
+    padding: 1.25rem;
+  }
+  
+  .tool-card h3 {
+    font-size: 1.15rem;
+  }
+  
+  .tool-card p {
+    font-size: 0.9rem;
+  }
+}

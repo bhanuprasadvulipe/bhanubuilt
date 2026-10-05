@@ -1,0 +1,100 @@
+.profile-section {
+  background-color: var(--bg-secondary);
+}
+
+.profile-grid {
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+}
+
+.profile-image {
+  flex: 1;
+}
+
+.image-wrapper {
+  position: relative;
+  border-radius: 1rem;
+}
+
+.image-wrapper img {
+  border-radius: 1rem;
+  box-shadow: 0 20px 40px rgba(var(--shadow-color), 0.4);
+  width: 100%;
+  filter: grayscale(10%);
+}
+
+.experience-badge {
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  background-color: var(--accent-primary);
+  color: var(--btn-text);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 10px 20px rgba(var(--accent-primary-rgb), 0.2);
+}
+
+.experience-badge .years {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.experience-badge .text {
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.profile-content {
+  flex: 1;
+}
+
+.profile-content h2 span {
+  color: var(--accent-primary);
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.feature-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.feature-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 500;
+}
+
+.check-icon {
+  color: var(--accent-primary);
+  flex-shrink: 0;
+}
+
+@media (max-width: 992px) {
+  .profile-grid {
+    flex-direction: column;
+  }
+  
+  .experience-badge {
+    bottom: -10px;
+    right: 10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .feature-list {
+    grid-template-columns: 1fr;
+  }
+}
