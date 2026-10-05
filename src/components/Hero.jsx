@@ -26,14 +26,14 @@ const Hero = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2
+        staggerChildren: 0.1
       }
     }
   };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
   };
 
   return (
@@ -42,7 +42,7 @@ const Hero = () => {
         className="hero-image"
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+        transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
       >
         <div className="image-placeholder">
           <div className="glow"></div>

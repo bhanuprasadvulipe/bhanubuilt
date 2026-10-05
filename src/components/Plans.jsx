@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import toast, { Toaster } from 'react-hot-toast';
-import { X } from 'lucide-react';
+import { X, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import './Plans.css';
 
@@ -109,32 +109,38 @@ const Plans = () => {
         ) : plans.length === 0 ? (
           <div className="text-center mt-8"><p>No plans available at the moment.</p></div>
         ) : (
-          <div className={`grid grid-cols-${plans.length >= 4 ? '4' : '3'} mt-8`}>
-            {plans.map((plan, index) => (
-              <motion.div 
-                key={plan.id} 
-                className={`card plan-card ${plan.is_popular ? 'popular' : ''}`}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5, delay: index * 0.15 }}
-                whileHover={{ y: plan.is_popular ? 0 : -10, transition: { duration: 0.2 } }}
-              >
-                {plan.is_popular && <div className="popular-badge">Most Popular</div>}
-                <h3>{plan.name}</h3>
-                <div className="price" style={{ margin: '2rem 0' }}>
-                  <span className="amount">{plan.price}</span>
-                </div>
-                
-                <button 
-                  className={`btn ${plan.is_popular ? 'btn-primary' : 'btn-outline'} w-100`}
-                  onClick={() => handleSelectPlan(plan)}
+          <>
+            <div className={`grid grid-cols-${plans.length >= 4 ? '4' : '3'} mt-8`}>
+              {plans.map((plan, index) => (
+                <motion.div 
+                  key={plan.id} 
+                  className={`card plan-card ${plan.is_popular ? 'popular' : ''}`}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.5, delay: index * 0.15 }}
+                  whileHover={{ y: plan.is_popular ? 0 : -10, transition: { duration: 0.2 } }}
                 >
-                  Select Plan
-                </button>
-              </motion.div>
-            ))}
-          </div>
+                  {plan.is_popular && <div className="popular-badge">Most Popular</div>}
+                  <h3>{plan.name}</h3>
+                  <div className="price" style={{ margin: '2rem 0' }}>
+                    <span className="amount">{plan.price}</span>
+                  </div>
+                  
+                  <button 
+                    className={`btn ${plan.is_popular ? 'btn-primary' : 'btn-outline'} w-100`}
+                    onClick={() => handleSelectPlan(plan)}
+                  >
+                    Select Plan
+                  </button>
+                </motion.div>
+              ))}
+            </div>
+            <div className="swipe-indicator">
+              <span>Swipe to see more plans</span>
+              <ArrowRight size={16} />
+            </div>
+          </>
         )}
       </div>
 

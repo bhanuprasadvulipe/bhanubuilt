@@ -132,6 +132,32 @@
   }
 }
 
+.swipe-indicator {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  animation: bounceRight 2s infinite;
+}
+
+@media (max-width: 768px) {
+  .swipe-indicator {
+    display: flex;
+  }
+}
+
+@keyframes bounceRight {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+}
+
 /* Modal Styling */
 .modal-overlay {
   position: fixed;
