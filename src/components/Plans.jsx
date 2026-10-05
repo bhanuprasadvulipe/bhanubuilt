@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import toast, { Toaster } from 'react-hot-toast';
-import { X } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import './Plans.css';
 
@@ -9,6 +9,14 @@ const Plans = () => {
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedPlan, setSelectedPlan] = useState(null);
+  const scrollRef = useRef(null);
+
+  const scroll = (direction) => {
+    if (scrollRef.current) {
+      const scrollAmount = 300;
+      scrollRef.current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+    }
+  };
   
   const [formData, setFormData] = useState({
     customer_name: '',
@@ -109,7 +117,11 @@ const Plans = () => {
         ) : plans.length === 0 ? (
           <div className="text-center mt-8"><p>No plans available at the moment.</p></div>
         ) : (
-          <div className={`grid grid-cols-${plans.length >= 4 ? '4' : '3'} mt-8`}>
+          <div className="grid-navigation">
+            <button className="nav-arrow" onClick={() => scroll('left')} aria-label="Previous plans">
+              <ChevronLeft size={24} />
+            </button>
+            <div className={`grid grid-cols-${plans.length >= 4 ? '4' : '3'} mt-8`} ref={scrollRef}>
             {plans.map((plan, index) => (
               <motion.div 
                 key={plan.id} 
@@ -134,6 +146,10 @@ const Plans = () => {
                 </button>
               </motion.div>
             ))}
+            </div>
+            <button className="nav-arrow" onClick={() => scroll('right')} aria-label="Next plans">
+              <ChevronRight size={24} />
+            </button>
           </div>
         )}
       </div>

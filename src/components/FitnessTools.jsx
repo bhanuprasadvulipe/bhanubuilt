@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Calculator, Utensils, Dumbbell } from 'lucide-react';
+import { Calculator, Utensils, Dumbbell, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import './FitnessTools.css';
 
 const FitnessTools = () => {
+  const scrollRef = useRef(null);
+
+  const scroll = (direction) => {
+    if (scrollRef.current) {
+      const scrollAmount = 300;
+      scrollRef.current.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' });
+    }
+  };
+
   const tools = [
     {
       title: 'Calorie Calculator',
@@ -40,7 +49,11 @@ const FitnessTools = () => {
           <p>Plan your nutrition and training with our free calculators — built for Indian diets and lifestyles.</p>
         </motion.div>
         
-        <div className="grid grid-cols-3 mt-8">
+        <div className="grid-navigation">
+          <button className="nav-arrow" onClick={() => scroll('left')} aria-label="Previous tools">
+            <ChevronLeft size={24} />
+          </button>
+          <div className="grid grid-cols-3 mt-8" ref={scrollRef}>
           {tools.map((tool, index) => (
             <motion.div
               key={index}
@@ -59,6 +72,10 @@ const FitnessTools = () => {
               </Link>
             </motion.div>
           ))}
+          </div>
+          <button className="nav-arrow" onClick={() => scroll('right')} aria-label="Next tools">
+            <ChevronRight size={24} />
+          </button>
         </div>
       </div>
     </section>

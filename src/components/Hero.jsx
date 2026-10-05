@@ -26,7 +26,8 @@ const Hero = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2
+        staggerChildren: 0.15,
+        delayChildren: 0.1
       }
     }
   };
@@ -40,9 +41,9 @@ const Hero = () => {
     <section className="hero">
       <motion.div 
         className="hero-image"
-        initial={{ opacity: 0, x: 50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" }}
       >
         <div className="image-placeholder">
           <div className="glow"></div>
