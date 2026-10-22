@@ -36,7 +36,7 @@
   align-items: center;
 }
 
-.nav-links-inner {
+.nav-links-list {
   display: flex;
   align-items: center;
   gap: 2rem;
@@ -45,17 +45,23 @@
 .nav-links a:not(.btn) {
   font-weight: 500;
   font-size: 0.95rem;
+  color: var(--text-primary);
+  transition: color 0.2s ease;
 }
 
 .nav-links a:not(.btn):hover {
   color: var(--accent-primary);
 }
 
-.mobile-drawer-header {
+.mobile-drawer-top {
   display: none;
 }
 
-.mobile-backdrop {
+.mobile-bottom-exit-btn {
+  display: none;
+}
+
+.mobile-backdrop-overlay {
   display: none;
 }
 
@@ -85,23 +91,23 @@
 @media (max-width: 768px) {
   .mobile-controls {
     display: flex;
+    z-index: 1002;
   }
 
-  .mobile-backdrop {
+  .header.menu-open .mobile-controls {
+    display: none;
+  }
+
+  /* Dimmer behind the drawer - clean tint, NO BLUR */
+  .mobile-backdrop-overlay {
     display: block;
     position: fixed;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(4px);
-    z-index: 1001;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-  }
-
-  .mobile-backdrop.open {
-    opacity: 1;
-    pointer-events: auto;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.65);
+    z-index: 1000;
   }
 
   .nav-links {
@@ -109,105 +115,122 @@
     top: 0;
     right: -100%;
     height: 100vh;
-    width: min(300px, 85vw);
-    background-color: var(--bg-secondary);
+    width: min(310px, 86vw);
+    background-color: #141414;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
     flex-direction: column;
-    padding: 0;
+    padding: 1.25rem 1.25rem 2rem 1.25rem;
     transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: -8px 0 25px rgba(0, 0, 0, 0.7);
-    z-index: 1002;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.8);
+    z-index: 1001;
     overflow-y: auto;
     align-items: stretch;
+    justify-content: flex-start;
   }
 
   .nav-links.open {
     right: 0;
   }
 
-  .mobile-drawer-header {
+  /* Top Drawer Header with Exit Button */
+  .mobile-drawer-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 1.25rem 1.25rem 1rem 1.25rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
     border-bottom: 1px solid var(--border-color);
   }
 
-  .mobile-back-btn {
+  .mobile-drawer-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .mobile-exit-btn {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    background: var(--bg-tertiary);
-    border: 1px solid var(--border-color);
-    color: var(--text-primary);
-    padding: 0.45rem 0.85rem;
-    border-radius: 8px;
+    gap: 0.35rem;
+    background-color: #ef4444;
+    color: #ffffff;
+    border: none;
+    padding: 0.45rem 0.95rem;
+    border-radius: 6px;
     font-size: 0.9rem;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
     transition: all 0.2s ease;
   }
 
-  .mobile-back-btn:hover,
-  .mobile-back-btn:active {
-    background: var(--accent-primary);
-    color: #000;
-    border-color: var(--accent-primary);
+  .mobile-exit-btn:hover,
+  .mobile-exit-btn:active {
+    background-color: #dc2626;
   }
 
-  .mobile-drawer-close {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    background: var(--bg-tertiary);
-    border: 1px solid var(--border-color);
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  .mobile-drawer-close:hover,
-  .mobile-drawer-close:active {
-    color: var(--text-primary);
-    border-color: var(--text-primary);
-  }
-
-  .nav-links-inner {
+  /* Links inside Drawer */
+  .nav-links-list {
     display: flex;
     flex-direction: column;
     width: 100%;
-    padding: 1rem 1.25rem 2.5rem 1.25rem;
     gap: 0.5rem;
     align-items: stretch;
   }
 
-  .nav-links-inner a:not(.btn) {
+  .nav-links-list a:not(.btn) {
     display: flex;
     align-items: center;
-    padding: 0.75rem 0.85rem;
+    padding: 0.85rem 1rem;
     border-radius: 8px;
     font-size: 1.05rem;
     font-weight: 500;
-    color: var(--text-primary);
+    color: #f3f4f6;
+    background-color: rgba(255, 255, 255, 0.04);
     transition: all 0.2s ease;
   }
 
-  .nav-links-inner a:not(.btn):hover,
-  .nav-links-inner a:not(.btn):active {
+  .nav-links-list a:not(.btn):hover,
+  .nav-links-list a:not(.btn):active {
     background-color: var(--bg-tertiary);
     color: var(--accent-primary);
-    padding-left: 1.1rem;
+    padding-left: 1.25rem;
   }
 
-  .nav-links-inner .btn {
-    margin-top: 1rem;
+  .nav-links-list .btn {
+    margin-top: 0.75rem;
     width: 100%;
     text-align: center;
     justify-content: center;
-    padding: 0.85rem;
+    padding: 0.9rem;
     font-size: 1rem;
+  }
+
+  /* Bottom Exit Button */
+  .mobile-bottom-exit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    margin-top: 1.5rem;
+    padding: 0.8rem;
+    background: transparent;
+    border: 1px dashed var(--border-color);
+    color: var(--text-secondary);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .mobile-bottom-exit-btn:hover,
+  .mobile-bottom-exit-btn:active {
+    color: #ef4444;
+    border-color: #ef4444;
+    background-color: rgba(239, 68, 68, 0.08);
   }
 }
