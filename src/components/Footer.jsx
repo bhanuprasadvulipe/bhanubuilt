@@ -10,7 +10,7 @@ const Footer = () => {
         <div className="footer-grid">
           <div className="footer-brand">
             <Link to="/" className="logo">
-              Bhanu <span>Built</span>
+              Bhanu<span>Built</span>
             </Link>
             <p className="mt-4">
               Premium personal training and online coaching for individuals who are serious about transforming their bodies and lives.
@@ -59,7 +59,7 @@ const Footer = () => {
         </div>
         
         <div className="footer-bottom">
-          <p>&copy; {new Date().getFullYear()} Bhanu Built. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} BhanuBuilt. All rights reserved.</p>
         </div>
       </div>
     </footer>

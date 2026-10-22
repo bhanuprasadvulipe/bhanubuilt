@@ -33,7 +33,7 @@ const Profile = () => {
         <div className="profile-grid">
           <div className="profile-image">
             <div className="image-wrapper">
-              <img src={profileImage} alt="Bhanu Built Professional" />
+              <img src={profileImage} alt="BhanuBuilt Professional" />
               <div className="experience-badge">
                 <span className="years">7+</span>
                 <span className="text">Years<br/>Experience</span>

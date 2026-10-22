@@ -96,7 +96,7 @@ const Testimonials = () => {
         transition={{ duration: 0.6 }}
       >
         <h2>What Our Users Say</h2>
-        <p>Join thousands of satisfied users worldwide</p>
+        <p>Join hundreds of satisfied users worldwide</p>
       </motion.div>
 
       <motion.div 

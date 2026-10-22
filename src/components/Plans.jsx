@@ -25,6 +25,27 @@ const Plans = () => {
   });
   const [submitting, setSubmitting] = useState(false);
 
+  const fallbackPlans = [
+    {
+      id: 'plan-1',
+      name: '1 Month Kickstart',
+      price: '₹5,000',
+      is_popular: false
+    },
+    {
+      id: 'plan-2',
+      name: '3 Months Transformation',
+      price: '₹12,000',
+      is_popular: true
+    },
+    {
+      id: 'plan-3',
+      name: '6 Months Elite Coaching',
+      price: '₹22,000',
+      is_popular: false
+    }
+  ];
+
   useEffect(() => {
     fetchPlans();
   }, []);
@@ -37,10 +58,14 @@ const Plans = () => {
         .order('created_at', { ascending: true });
         
       if (error) throw error;
-      if (data) setPlans(data);
+      if (data && data.length > 0) {
+        setPlans(data);
+      } else {
+        setPlans(fallbackPlans);
+      }
     } catch (error) {
-      console.error('Error fetching plans:', error);
-      toast.error('Failed to load plans.');
+      console.warn('Backend unavailable, displaying default plans:', error);
+      setPlans(fallbackPlans);
     } finally {
       setLoading(false);
     }
@@ -76,25 +101,25 @@ const Plans = () => {
           }
         ]);
         
-      if (error) throw error;
-      
-      toast.success('Your request has been submitted!');
-      
-      // WhatsApp Redirection
-      // REPLACE '919999999999' WITH YOUR ACTUAL WHATSAPP NUMBER (include country code, no +)
-      const phoneNumber = '916304922209'; 
-      const message = `Hi, I am interested in the ${selectedPlan.name} plan.\n\nMy Details:\nName: ${formData.customer_name}\nEmail: ${formData.email}\nContact: ${formData.contact}`;
-      const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-      
-      window.open(whatsappUrl, '_blank');
-      
-      closeModal();
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      toast.error('Submission failed. Please try again.');
-    } finally {
-      setSubmitting(false);
+      if (error) {
+        console.warn('Could not record submission to database:', error);
+      }
+    } catch (dbError) {
+      console.warn('Backend offline, proceeding with WhatsApp inquiry:', dbError);
     }
+
+    toast.success('Your request has been submitted!');
+    
+    // WhatsApp Redirection
+    // REPLACE '919999999999' WITH YOUR ACTUAL WHATSAPP NUMBER (include country code, no +)
+    const phoneNumber = '916304922209'; 
+    const message = `Hi, I am interested in the ${selectedPlan.name} plan.\n\nMy Details:\nName: ${formData.customer_name}\nEmail: ${formData.email}\nContact: ${formData.contact}`;
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    
+    window.open(whatsappUrl, '_blank');
+    
+    closeModal();
+    setSubmitting(false);
   };
 
   return (
