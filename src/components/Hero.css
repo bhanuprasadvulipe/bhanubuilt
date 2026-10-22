@@ -6,6 +6,7 @@
   align-items: center;
   position: relative;
   overflow: hidden;
+  background-color: var(--bg-primary, #121212);
 }
 
 .hero::before {
@@ -20,7 +21,7 @@
 }
 
 .hero-container {
-  display: block; /* Removed flex columns so it doesn't force image down */
+  display: block;
   position: relative;
   z-index: 10;
   width: 100%;
@@ -77,26 +78,40 @@
   width: 60%;
   z-index: 1; /* Behind the text */
   pointer-events: none;
+  overflow: hidden;
 }
 
 .image-placeholder {
   position: relative;
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .image-placeholder img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* 
-    Using 65% on the Y-axis finds the sweet spot between 50% (center) and 100% (bottom).
-    It pulls the image down enough to show the head, but keeps as much of the lower body as possible.
-  */
-  object-position: left 65%; 
-  /* Simple, bulletproof fade on the left side */
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 40%);
-  mask-image: linear-gradient(to right, transparent 0%, black 40%);
+  object-position: center 20%;
+  /* Single smooth radial vignette mask that dissolves all 4 edges seamlessly into the page */
+  -webkit-mask-image: radial-gradient(ellipse 85% 80% at 68% 48%, black 30%, rgba(0, 0, 0, 0.85) 55%, transparent 88%);
+  mask-image: radial-gradient(ellipse 85% 80% at 68% 48%, black 30%, rgba(0, 0, 0, 0.85) 55%, transparent 88%);
+}
+
+/* Multi-edge gradient overlays to guarantee 100% seamless merging with the dark page */
+.image-placeholder::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: 
+    linear-gradient(to right, var(--bg-primary, #121212) 0%, rgba(18, 18, 18, 0.95) 15%, rgba(18, 18, 18, 0.5) 35%, transparent 65%),
+    linear-gradient(to top, var(--bg-primary, #121212) 0%, rgba(18, 18, 18, 0.9) 12%, transparent 35%),
+    linear-gradient(to bottom, var(--bg-primary, #121212) 0%, rgba(18, 18, 18, 0.85) 10%, transparent 28%),
+    linear-gradient(to left, var(--bg-primary, #121212) 0%, rgba(18, 18, 18, 0.4) 4%, transparent 18%);
+  z-index: 2;
 }
 
 .glow {
@@ -115,9 +130,9 @@
 @media (max-width: 992px) {
   .hero {
     min-height: auto;
-    padding-top: 10rem;
-    padding-bottom: 5rem;
-    align-items: flex-start; /* Align text higher on mobile */
+    padding-top: 8rem;
+    padding-bottom: 4.5rem;
+    align-items: flex-start;
   }
   
   .hero-container {
@@ -126,31 +141,45 @@
   
   .hero-content {
     max-width: 100%;
+    position: relative;
+    z-index: 10;
   }
   
   .hero p {
-    margin: 0 0 2.5rem 0; /* Left align p */
+    margin: 0 0 2rem 0;
+    max-width: 100%;
   }
   
   .hero-actions {
-    justify-content: flex-start; /* Left align buttons */
+    justify-content: flex-start;
   }
 
   .hero-image {
-    width: 60%; /* Exactly 60% of screen width on the extreme right */
+    width: 100%; /* Spans full width so whole image subject is visible */
+    left: 0;
     right: 0;
-    opacity: 1; /* Fully visible */
+    top: 0;
+    bottom: 0;
+    opacity: 0.95;
+  }
+
+  .image-placeholder {
+    justify-content: flex-end;
   }
 
   .image-placeholder img {
-    /* Set object-position to left bottom so it anchors to the bottom left */
-    object-position: left bottom; 
-    /* Scale the image up by 20% from the bottom left. 
-       This pushes the top 20% out of the frame (cropping it) and moves the face upwards! */
-    transform-origin: left bottom;
-    transform: scale(1.2);
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 40%);
-    mask-image: linear-gradient(to right, transparent 0%, black 40%);
+    object-position: 72% 20%; /* Centers the trainer portrait prominently */
+    transform: none; /* No scale clipping */
+    -webkit-mask-image: radial-gradient(ellipse 95% 85% at 65% 45%, black 40%, rgba(0, 0, 0, 0.8) 62%, transparent 92%);
+    mask-image: radial-gradient(ellipse 95% 85% at 65% 45%, black 40%, rgba(0, 0, 0, 0.8) 62%, transparent 92%);
+  }
+
+  .image-placeholder::after {
+    background: 
+      linear-gradient(to right, var(--bg-primary, #121212) 0%, rgba(18, 18, 18, 0.95) 45%, rgba(18, 18, 18, 0.5) 75%, transparent 100%),
+      linear-gradient(to top, var(--bg-primary, #121212) 0%, rgba(18, 18, 18, 0.95) 15%, transparent 35%),
+      linear-gradient(to bottom, var(--bg-primary, #121212) 0%, rgba(18, 18, 18, 0.85) 12%, transparent 28%),
+      linear-gradient(to left, var(--bg-primary, #121212) 0%, transparent 10%);
   }
   
   .hero::before {
@@ -161,13 +190,44 @@
 }
 
 @media (max-width: 480px) {
+  .hero {
+    padding-top: 7rem;
+    padding-bottom: 3.5rem;
+  }
+
+  .hero h1 {
+    font-size: 2.35rem;
+    line-height: 1.15;
+  }
+
+  .hero p {
+    font-size: 1.05rem;
+    line-height: 1.5;
+  }
+
   .hero-actions {
     flex-direction: column;
+    gap: 0.75rem;
   }
+
   .hero-content {
-    text-align: left; /* Left align text on small screens for better readability over image */
+    text-align: left;
   }
+
   .hero-image {
-    opacity: 0.5; /* more transparent on very small screens */
+    width: 100%;
+    opacity: 0.96;
+  }
+
+  .image-placeholder img {
+    object-position: 75% 20%;
+  }
+
+  .image-placeholder::after {
+    background: 
+      linear-gradient(to right, var(--bg-primary, #121212) 0%, rgba(18, 18, 18, 0.96) 50%, rgba(18, 18, 18, 0.55) 80%, rgba(18, 18, 18, 0.2) 100%),
+      linear-gradient(to top, var(--bg-primary, #121212) 0%, rgba(18, 18, 18, 0.95) 18%, transparent 40%),
+      linear-gradient(to bottom, var(--bg-primary, #121212) 0%, rgba(18, 18, 18, 0.9) 14%, transparent 30%),
+      linear-gradient(to left, var(--bg-primary, #121212) 0%, transparent 12%);
   }
 }
