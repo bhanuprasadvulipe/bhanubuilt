@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabaseClient';
 import toast, { Toaster } from 'react-hot-toast';
-import { Edit, Trash2, Plus, LogOut, X } from 'lucide-react';
+import { Edit, Trash2, Plus, LogOut, X, Crop, Upload, Eye } from 'lucide-react';
+import ImageCropperModal from '../components/ImageCropperModal';
 import './Admin.css';
+
+const DEFAULT_HERO_IMAGE = 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=1000&auto=format&fit=crop';
+const DEFAULT_PROFILE_IMAGE = 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=800&auto=format&fit=crop';
 
 const AdminDashboard = () => {
   const [session, setSession] = useState(null);
-  const [activeTab, setActiveTab] = useState('plans'); // 'plans', 'submissions', or 'transformations'
+  const [activeTab, setActiveTab] = useState('plans'); // 'plans', 'submissions', 'transformations', 'site-settings'
   const [plans, setPlans] = useState([]);
   const [submissions, setSubmissions] = useState([]);
   const [transformations, setTransformations] = useState([]);
@@ -18,6 +22,15 @@ const AdminDashboard = () => {
   const [uploadingSetting, setUploadingSetting] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  // Cropper Modal State
+  const [cropperModal, setCropperModal] = useState({
+    isOpen: false,
+    imageSrc: '',
+    sectionType: 'hero'
+  });
+  const heroFileInputRef = useRef(null);
+  const profileFileInputRef = useRef(null);
 
   // Modal State for Plan
   const [showPlanModal, setShowPlanModal] = useState(false);
@@ -239,7 +252,7 @@ const AdminDashboard = () => {
     setUploadingSetting(true);
     
     try {
-      const ext = file.name.split('.').pop();
+      const ext = (file.name && file.name.includes('.')) ? file.name.split('.').pop() : 'jpg';
       const fileName = `${Date.now()}_${keyName}.${ext}`;
       
       const { error: uploadErr } = await supabase.storage
@@ -260,10 +273,49 @@ const AdminDashboard = () => {
       
     } catch (error) {
       console.error(error);
-      toast.error('Error uploading image');
+      // If offline/dormant, still update local state preview so admin can test visually
+      if (file instanceof Blob || file instanceof File) {
+        const localUrl = URL.createObjectURL(file);
+        setSiteSettings(prev => ({ ...prev, [keyName]: localUrl }));
+      }
+      toast.error('Image adjusted locally (Supabase storage offline)');
     } finally {
       setUploadingSetting(false);
     }
+  };
+
+  const handleFileSelectForCropper = (file, sectionType) => {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      setCropperModal({
+        isOpen: true,
+        imageSrc: reader.result,
+        sectionType
+      });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const openCropperForCurrent = (sectionType) => {
+    const currentSrc = sectionType === 'hero' 
+      ? (siteSettings.hero_image || DEFAULT_HERO_IMAGE) 
+      : (siteSettings.profile_image || DEFAULT_PROFILE_IMAGE);
+
+    setCropperModal({
+      isOpen: true,
+      imageSrc: currentSrc,
+      sectionType
+    });
+  };
+
+  const handleCroppedSave = async (croppedBlob) => {
+    const keyName = cropperModal.sectionType === 'hero' ? 'hero_image' : 'profile_image';
+    const fileName = `${Date.now()}_${keyName}.jpg`;
+    const file = new File([croppedBlob], fileName, { type: 'image/jpeg' });
+    
+    await handleSettingImageUpload(file, keyName);
+    setCropperModal(prev => ({ ...prev, isOpen: false }));
   };
 
   if (!session) return null;
@@ -395,51 +447,140 @@ const AdminDashboard = () => {
           </div>
         ) : activeTab === 'site-settings' ? (
           <div>
-            <h3 style={{ marginBottom: '1rem' }}>Site Settings</h3>
-            <div className="data-table-container" style={{ padding: '2rem', backgroundColor: 'var(--bg-secondary)', borderRadius: '12px' }}>
-              
-              <div style={{ marginBottom: '3rem' }}>
-                <h4 style={{ marginBottom: '1rem', color: 'var(--accent-primary)' }}>Hero Section Image ("Redesign the way You Look")</h4>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-                  {siteSettings.hero_image && (
-                    <img src={siteSettings.hero_image} alt="Hero" style={{ width: '150px', height: '150px', objectFit: 'cover', borderRadius: '8px' }} />
-                  )}
-                  <div style={{ flex: 1 }}>
-                    <input 
-                      type="file" 
-                      accept="image/*"
-                      onChange={(e) => handleSettingImageUpload(e.target.files[0], 'hero_image')}
-                      className="form-input"
-                      style={{ padding: '0.5rem', marginBottom: '1rem' }}
-                      disabled={uploadingSetting}
-                    />
-                    <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Recommended: High quality image, transparent background or gym environment.</p>
+            <div className="settings-header-banner">
+              <h3>Site Settings & Image Studio</h3>
+              <p className="text-secondary">
+                Preview, adjust, and crop your live website images in the exact aspect ratio and layout as they appear on the main page.
+              </p>
+            </div>
+
+            <div className="settings-studio-grid">
+              {/* Hero Image Studio Card */}
+              <div className="settings-card">
+                <div className="settings-card-header">
+                  <h4>Hero Section Banner ("Redesign the way You Look")</h4>
+                  <span className="aspect-badge">Aspect: 4:5 Mobile / 16:9 Desktop</span>
+                </div>
+
+                <div className="preview-label-tag">
+                  <Eye size={14} /> Live Main Page Preview:
+                </div>
+
+                {/* Hero Mini Mockup */}
+                <div className="settings-live-preview">
+                  <div className="mini-hero-mockup">
+                    <div className="mini-hero-content">
+                      <span className="mini-badge">Online Personal Training</span>
+                      <h5>Redesign the way <span>You Look</span></h5>
+                      <p>Custom coaching by Bhanu</p>
+                    </div>
+                    <div className="mini-hero-img-wrap">
+                      <img 
+                        src={siteSettings.hero_image || DEFAULT_HERO_IMAGE} 
+                        alt="Hero Live Preview" 
+                      />
+                    </div>
                   </div>
                 </div>
+
+                <div className="settings-card-actions">
+                  <input 
+                    type="file" 
+                    ref={heroFileInputRef} 
+                    accept="image/*" 
+                    onChange={(e) => {
+                      handleFileSelectForCropper(e.target.files[0], 'hero');
+                      e.target.value = '';
+                    }} 
+                    style={{ display: 'none' }} 
+                  />
+                  <button 
+                    type="button" 
+                    className="btn btn-primary"
+                    onClick={() => heroFileInputRef.current?.click()}
+                    disabled={uploadingSetting}
+                  >
+                    <Upload size={16} /> Upload & Crop New
+                  </button>
+                  <button 
+                    type="button" 
+                    className="btn btn-outline"
+                    onClick={() => openCropperForCurrent('hero')}
+                    disabled={uploadingSetting}
+                  >
+                    <Crop size={16} /> Adjust Current
+                  </button>
+                </div>
+
+                <p className="settings-card-hint">
+                  💡 <strong>How it looks:</strong> The hero photo is displayed on the right with a smooth fade behind the title. Keep face/chest in the upper-right area for best framing.
+                </p>
               </div>
 
-              <hr style={{ borderColor: 'var(--border-color)', margin: '2rem 0' }} />
+              {/* Profile Image Studio Card */}
+              <div className="settings-card">
+                <div className="settings-card-header">
+                  <h4>Profile Section Photo ("Meet Bhanu Prasad Vulipe")</h4>
+                  <span className="aspect-badge">Aspect: 3:4 Portrait</span>
+                </div>
 
-              <div>
-                <h4 style={{ marginBottom: '1rem', color: 'var(--accent-primary)' }}>Profile Section Image ("Meet Bhanu Prasad Vulipe")</h4>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-                  {siteSettings.profile_image && (
-                    <img src={siteSettings.profile_image} alt="Profile" style={{ width: '150px', height: '150px', objectFit: 'cover', borderRadius: '8px' }} />
-                  )}
-                  <div style={{ flex: 1 }}>
-                    <input 
-                      type="file" 
-                      accept="image/*"
-                      onChange={(e) => handleSettingImageUpload(e.target.files[0], 'profile_image')}
-                      className="form-input"
-                      style={{ padding: '0.5rem', marginBottom: '1rem' }}
-                      disabled={uploadingSetting}
-                    />
-                    <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Recommended: Professional portrait, well-lit.</p>
+                <div className="preview-label-tag">
+                  <Eye size={14} /> Live Main Page Preview:
+                </div>
+
+                {/* Profile Mini Mockup */}
+                <div className="settings-live-preview">
+                  <div className="mini-profile-mockup">
+                    <div className="mini-profile-img-wrap">
+                      <img 
+                        src={siteSettings.profile_image || DEFAULT_PROFILE_IMAGE} 
+                        alt="Profile Live Preview" 
+                      />
+                      <div className="mini-exp-badge">
+                        <span className="mini-exp-years">7+</span>
+                        <span className="mini-exp-text">Years<br/>Exp</span>
+                      </div>
+                    </div>
+                    <div className="mini-profile-content">
+                      <h5>Meet <span>Bhanu Prasad Vulipe</span></h5>
+                      <p>Professional fitness coach & physique athlete</p>
+                    </div>
                   </div>
                 </div>
-              </div>
 
+                <div className="settings-card-actions">
+                  <input 
+                    type="file" 
+                    ref={profileFileInputRef} 
+                    accept="image/*" 
+                    onChange={(e) => {
+                      handleFileSelectForCropper(e.target.files[0], 'profile');
+                      e.target.value = '';
+                    }} 
+                    style={{ display: 'none' }} 
+                  />
+                  <button 
+                    type="button" 
+                    className="btn btn-primary"
+                    onClick={() => profileFileInputRef.current?.click()}
+                    disabled={uploadingSetting}
+                  >
+                    <Upload size={16} /> Upload & Crop New
+                  </button>
+                  <button 
+                    type="button" 
+                    className="btn btn-outline"
+                    onClick={() => openCropperForCurrent('profile')}
+                    disabled={uploadingSetting}
+                  >
+                    <Crop size={16} /> Adjust Current
+                  </button>
+                </div>
+
+                <p className="settings-card-hint">
+                  💡 <strong>How it looks:</strong> Displayed as a vertical portrait with rounded corners and the golden 7+ Years Experience badge in the bottom-right corner.
+                </p>
+              </div>
             </div>
           </div>
         ) : (
@@ -595,6 +736,15 @@ const AdminDashboard = () => {
           </div>
         </div>
       )}
+      {/* Image Crop & Adjust Modal */}
+      <ImageCropperModal 
+        isOpen={cropperModal.isOpen}
+        onClose={() => setCropperModal(prev => ({ ...prev, isOpen: false }))}
+        imageSrc={cropperModal.imageSrc}
+        sectionType={cropperModal.sectionType}
+        onSave={handleCroppedSave}
+        isSaving={uploadingSetting}
+      />
     </div>
   );
 };
