@@ -11,6 +11,13 @@
   margin-bottom: 4rem;
 }
 
+.footer-brand-header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
 .footer-brand .logo {
   font-size: 1.5rem;
   font-weight: 800;
@@ -21,27 +28,50 @@
   color: var(--accent-primary);
 }
 
-.social-links {
+.footer-brand-socials {
   display: flex;
-  gap: 1rem;
+  align-items: center;
+  gap: 0.6rem;
 }
 
-.social-links a {
+.footer-brand-socials .social-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.05);
   color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   transition: all 0.3s ease;
+  flex-shrink: 0;
 }
 
-.social-links a:hover {
-  background-color: var(--accent-primary);
-  color: var(--btn-text);
+.footer-brand-socials .social-btn:hover {
   transform: translateY(-3px);
+  color: #ffffff;
+}
+
+.footer-brand-socials .social-btn.instagram:hover {
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+  border-color: transparent;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(225, 48, 108, 0.4);
+}
+
+.footer-brand-socials .social-btn.youtube:hover {
+  background: #ff0000;
+  border-color: #ff0000;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(255, 0, 0, 0.4);
+}
+
+.footer-brand-socials .social-btn.email:hover {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: var(--btn-text);
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.4);
 }
 
 .footer-links h3, .footer-contact h3 {

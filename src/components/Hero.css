@@ -75,7 +75,9 @@
   top: 0;
   right: 0;
   bottom: 0;
-  width: 60%;
+  left: 0;
+  width: 100%;
+  height: 100%;
   z-index: 1; /* Behind the text */
   pointer-events: none;
   overflow: hidden;
@@ -94,36 +96,33 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 20%;
-  /* Single smooth radial vignette mask that dissolves all 4 edges seamlessly into the page */
-  -webkit-mask-image: radial-gradient(ellipse 85% 80% at 68% 48%, black 30%, rgba(0, 0, 0, 0.85) 55%, transparent 88%);
-  mask-image: radial-gradient(ellipse 85% 80% at 68% 48%, black 30%, rgba(0, 0, 0, 0.85) 55%, transparent 88%);
+  object-position: 82% 15%;
+  /* Removed aggressive mask-image so image is crisp, bright, and clearly visible */
 }
 
-/* Multi-edge gradient overlays to guarantee 100% seamless merging with the dark page */
+/* Clean directional vignette: dark on left behind text, 100% crystal clear on right for trainer */
 .image-placeholder::after {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
   background: 
-    linear-gradient(to right, var(--bg-primary, #121212) 0%, rgba(18, 18, 18, 0.95) 15%, rgba(18, 18, 18, 0.5) 35%, transparent 65%),
-    linear-gradient(to top, var(--bg-primary, #121212) 0%, rgba(18, 18, 18, 0.9) 12%, transparent 35%),
-    linear-gradient(to bottom, var(--bg-primary, #121212) 0%, rgba(18, 18, 18, 0.85) 10%, transparent 28%),
-    linear-gradient(to left, var(--bg-primary, #121212) 0%, rgba(18, 18, 18, 0.4) 4%, transparent 18%);
+    linear-gradient(to right, rgba(18, 18, 18, 0.98) 0%, rgba(18, 18, 18, 0.88) 35%, rgba(18, 18, 18, 0.25) 58%, transparent 75%),
+    linear-gradient(to top, var(--bg-primary, #121212) 0%, rgba(18, 18, 18, 0) 12%),
+    linear-gradient(to bottom, rgba(18, 18, 18, 0.6) 0%, rgba(18, 18, 18, 0) 10%);
   z-index: 2;
 }
 
 .glow {
   position: absolute;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80%;
-  height: 80%;
+  right: 15%;
+  transform: translate(0, -50%);
+  width: 50%;
+  height: 60%;
   background: var(--accent-primary);
-  filter: blur(100px);
-  opacity: 0.15;
+  filter: blur(120px);
+  opacity: 0.12;
   z-index: 1;
 }
 
@@ -151,7 +150,14 @@
   }
   
   .hero-actions {
-    justify-content: flex-start;
+    flex-direction: column;
+    gap: 0.85rem;
+    width: 100%;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+    justify-content: center;
   }
 
   .hero-image {
@@ -160,7 +166,7 @@
     right: 0;
     top: 0;
     bottom: 0;
-    opacity: 0.95;
+    opacity: 1;
   }
 
   .image-placeholder {
@@ -168,18 +174,17 @@
   }
 
   .image-placeholder img {
-    object-position: 72% 20%; /* Centers the trainer portrait prominently */
-    transform: none; /* No scale clipping */
-    -webkit-mask-image: radial-gradient(ellipse 95% 85% at 65% 45%, black 40%, rgba(0, 0, 0, 0.8) 62%, transparent 92%);
-    mask-image: radial-gradient(ellipse 95% 85% at 65% 45%, black 40%, rgba(0, 0, 0, 0.8) 62%, transparent 92%);
+    object-position: 84% 15%; /* Positions the trainer prominently on the right */
+    transform: none;
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 
   .image-placeholder::after {
     background: 
-      linear-gradient(to right, var(--bg-primary, #121212) 0%, rgba(18, 18, 18, 0.95) 45%, rgba(18, 18, 18, 0.5) 75%, transparent 100%),
-      linear-gradient(to top, var(--bg-primary, #121212) 0%, rgba(18, 18, 18, 0.95) 15%, transparent 35%),
-      linear-gradient(to bottom, var(--bg-primary, #121212) 0%, rgba(18, 18, 18, 0.85) 12%, transparent 28%),
-      linear-gradient(to left, var(--bg-primary, #121212) 0%, transparent 10%);
+      linear-gradient(to right, rgba(18, 18, 18, 0.94) 0%, rgba(18, 18, 18, 0.82) 36%, rgba(18, 18, 18, 0.25) 60%, transparent 78%),
+      linear-gradient(to top, var(--bg-primary, #121212) 0%, rgba(18, 18, 18, 0) 10%),
+      linear-gradient(to bottom, rgba(18, 18, 18, 0.65) 0%, rgba(18, 18, 18, 0) 10%);
   }
   
   .hero::before {
@@ -216,18 +221,19 @@
 
   .hero-image {
     width: 100%;
-    opacity: 0.96;
+    opacity: 1;
   }
 
   .image-placeholder img {
-    object-position: 75% 20%;
+    object-position: 84% 15%;
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 
   .image-placeholder::after {
     background: 
-      linear-gradient(to right, var(--bg-primary, #121212) 0%, rgba(18, 18, 18, 0.96) 50%, rgba(18, 18, 18, 0.55) 80%, rgba(18, 18, 18, 0.2) 100%),
-      linear-gradient(to top, var(--bg-primary, #121212) 0%, rgba(18, 18, 18, 0.95) 18%, transparent 40%),
-      linear-gradient(to bottom, var(--bg-primary, #121212) 0%, rgba(18, 18, 18, 0.9) 14%, transparent 30%),
-      linear-gradient(to left, var(--bg-primary, #121212) 0%, transparent 12%);
+      linear-gradient(to right, rgba(18, 18, 18, 0.9) 0%, rgba(18, 18, 18, 0.72) 42%, rgba(18, 18, 18, 0.2) 68%, transparent 82%),
+      linear-gradient(to top, var(--bg-primary, #121212) 0%, rgba(18, 18, 18, 0) 12%),
+      linear-gradient(to bottom, rgba(18, 18, 18, 0.6) 0%, rgba(18, 18, 18, 0) 10%);
   }
 }
