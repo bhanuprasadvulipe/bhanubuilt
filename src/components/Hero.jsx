@@ -60,7 +60,7 @@ const Hero = () => {
           <motion.div className="badge" variants={itemVariants}>Online Personal Training</motion.div>
           <motion.h1 variants={itemVariants}>Redesign the way <span>You Look</span></motion.h1>
           <motion.p variants={itemVariants}>
-            Transform your body with custom training and nutrition plans by Bhanu. Expert coaching based in Hyderabad to help you build your dream physique.
+            Transform your body with custom training and nutrition plans by Bhanu. Expert coaching based in Telangana to help you build your dream physique.
           </motion.p>
           <motion.div className="hero-actions" variants={itemVariants}>
             <a href="#plans" className="btn btn-primary">
