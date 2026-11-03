@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dumbbell, Apple, Video } from 'lucide-react';
+import { Dumbbell, Apple, Video, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import './Services.css';
 
@@ -38,8 +38,9 @@ const Services = () => {
         
         <div className="grid grid-cols-3 mt-8">
           {services.map((service, index) => (
-            <motion.div 
+            <motion.a 
               key={index} 
+              href="#plans"
               className="card service-card"
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -52,7 +53,10 @@ const Services = () => {
               </div>
               <h3>{service.title}</h3>
               <p>{service.description}</p>
-            </motion.div>
+              <span className="service-card-action">
+                Choose Plan <ArrowRight size={16} />
+              </span>
+            </motion.a>
           ))}
         </div>
       </div>

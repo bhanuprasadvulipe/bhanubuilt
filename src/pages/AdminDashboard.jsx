@@ -421,7 +421,7 @@ const AdminDashboard = () => {
               <hr style={{ borderColor: 'var(--border-color)', margin: '2rem 0' }} />
 
               <div>
-                <h4 style={{ marginBottom: '1rem', color: 'var(--accent-primary)' }}>Profile Section Image ("Meet Bhanu Prasad Vulipe")</h4>
+                <h4 style={{ marginBottom: '1rem', color: 'var(--accent-primary)' }}>Profile Section Image ("Meet BHANU PRASAD VULIPE")</h4>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
                   {siteSettings.profile_image && (
                     <img src={siteSettings.profile_image} alt="Profile" style={{ width: '150px', height: '150px', objectFit: 'cover', borderRadius: '8px' }} />

@@ -11,7 +11,7 @@ const Footer = () => {
           <div className="footer-brand">
             <div className="footer-brand-header">
               <Link to="/" className="logo">
-                Bhanu<span>Built</span>
+                BHANU<span>BUILT</span>
               </Link>
               <div className="footer-brand-socials" aria-label="Social media links">
                 <a 
@@ -84,7 +84,7 @@ const Footer = () => {
         </div>
         
         <div className="footer-bottom">
-          <p>&copy; {new Date().getFullYear()} BhanuBuilt. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} BHANUBUILT. All rights reserved.</p>
         </div>
       </div>
     </footer>

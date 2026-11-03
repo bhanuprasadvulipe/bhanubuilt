@@ -33,7 +33,7 @@ const Profile = () => {
         <div className="profile-grid">
           <div className="profile-image">
             <div className="image-wrapper">
-              <img src={profileImage} alt="BhanuBuilt Professional" />
+              <img src={profileImage} alt="BHANU PRASAD VULIPE" />
               <div className="experience-badge">
                 <span className="years">7+</span>
                 <span className="text">Years<br/>Experience</span>
@@ -42,7 +42,7 @@ const Profile = () => {
           </div>
           
           <div className="profile-content">
-            <h2 className="mb-4">Meet <span>Bhanu Prasad Vulipe</span></h2>
+            <h2 className="mb-4">Meet <span>BHANU PRASAD VULIPE</span></h2>
             <p className="subtitle mb-6">Your Dedicated Fitness Coach</p>
             
             <p className="mb-4">

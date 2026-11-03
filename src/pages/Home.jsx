@@ -1,6 +1,5 @@
 import React from 'react';
 import Hero from '../components/Hero';
-import Stats from '../components/Stats';
 import Services from '../components/Services';
 import Profile from '../components/Profile';
 import Transformations from '../components/Transformations';
@@ -12,7 +11,6 @@ const Home = () => {
   return (
     <main>
       <Hero />
-      <Stats />
       <Services />
       <Profile />
       <Transformations />

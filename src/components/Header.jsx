@@ -33,7 +33,7 @@ const Header = () => {
       <div className="container header-content">
         <div className="header-brand-group">
           <Link to="/" className="logo" onClick={closeMenu}>
-            Bhanu<span>Built</span>
+            BHANU<span>BUILT</span>
           </Link>
           
           <div className="header-social-links" aria-label="Social media links">

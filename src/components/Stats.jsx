@@ -11,16 +11,16 @@ const Stats = () => {
   ];
 
   return (
-    <section className="stats-section">
+    <div className="stats-section">
       <div className="container">
         <div className="stats-grid">
           {stats.map((stat, index) => (
             <motion.div 
               key={index} 
               className="stat-item"
-              initial={{ opacity: 0, scale: 0.5 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, amount: 0.5 }}
+              initial={{ opacity: 0, scale: 0.85, y: 20 }}
+              whileInView={{ opacity: 1, scale: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.5, delay: index * 0.1, type: "spring", stiffness: 100 }}
             >
               <h3>{stat.value}</h3>
@@ -29,7 +29,7 @@ const Stats = () => {
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

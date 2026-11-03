@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { ArrowRight, Play } from 'lucide-react';
 import { motion } from 'framer-motion';
+import Stats from './Stats';
 import './Hero.css';
 
 const Hero = () => {
@@ -47,7 +48,7 @@ const Hero = () => {
       >
         <div className="image-placeholder">
           <div className="glow"></div>
-          <img src={heroImage} alt="Gym Trainer Bhanu" />
+          <img src={heroImage} alt="Gym Trainer BHANUBUILT" />
         </div>
       </motion.div>
       <div className="container hero-container">
@@ -60,7 +61,7 @@ const Hero = () => {
           <motion.div className="badge" variants={itemVariants}>Online Personal Training</motion.div>
           <motion.h1 variants={itemVariants}>Redesign the way <span>You Look</span></motion.h1>
           <motion.p variants={itemVariants}>
-            Transform your body with custom training and nutrition plans by Bhanu. Expert coaching based in Telangana to help you build your dream physique.
+            Transform your body with custom training and nutrition plans by BHANUBUILT. Expert coaching based in Telangana to help you build your dream physique.
           </motion.p>
           <motion.div className="hero-actions" variants={itemVariants}>
             <a href="#plans" className="btn btn-primary">
@@ -71,6 +72,10 @@ const Hero = () => {
             </a>
           </motion.div>
         </motion.div>
+      </div>
+
+      <div className="hero-stats-wrapper">
+        <Stats />
       </div>
     </section>
   );
